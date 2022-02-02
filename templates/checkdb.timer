@@ -1,0 +1,10 @@
+[Unit]
+Description=Run checkdb.sh periodically
+Requires=checkdb.service
+
+[Timer]
+Unit=checkdb.service
+OnCalendar={{OnCalendar}}
+
+[Install]
+WantedBy=timers.target

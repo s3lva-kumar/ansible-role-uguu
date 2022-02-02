@@ -1,0 +1,5 @@
+---
+# include ubuntu installation
+- include: install-dependencies.yml
+# include common installation
+- include: uguu-install-config.yml

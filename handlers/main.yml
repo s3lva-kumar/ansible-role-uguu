@@ -1,0 +1,18 @@
+---
+# handlers file for ansible-role-uguu
+- name: nginx restart
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
+
+- name: restart systemd timer
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  with_items:
+  - checkdb.timer
+  - checkfiles.timer
+  

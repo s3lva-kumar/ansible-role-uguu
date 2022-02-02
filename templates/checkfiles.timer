@@ -1,0 +1,10 @@
+[Unit]
+Description=Run checkfiles.sh periodically
+Requires=checkfiles.service
+
+[Timer]
+Unit=checkfiles.service
+OnCalendar={{OnCalendar}}
+
+[Install]
+WantedBy=timers.target
