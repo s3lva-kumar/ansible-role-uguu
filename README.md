@@ -13,7 +13,7 @@ The following code has been tested with Ubuntu 20.04
   hosts: enter your hosts file
   beome: yes
   role:
-    - uguu_role
+    - ansible-role-uguu
 
   vars:
     git_release_version: v1.5.0
