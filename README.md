@@ -11,7 +11,7 @@ The following code has been tested with Ubuntu 20.04
  
 - name: "install uguu"
   hosts: enter your hosts file
-  beome: yes
+  become: yes
   role:
     - ansible-role-uguu
 
