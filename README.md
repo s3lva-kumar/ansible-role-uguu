@@ -29,7 +29,7 @@ These below variables are changeable. You can change these variables according t
 | variable name | default value | description |
 | ------------- | ------------- | ----------- |
 | `ubuntu_release` | `focal` | `Give your ubuntu release for add nginx repo` |
-| `OnCalendar` | `*-*-* *:*:30` | `Define shell script running periodically. If change this shedule, give systemd OnCalendar time` |
+| `OnCalendar` | `*-*-**:*:30` | `Define shell script running periodically. If change this shedule, give systemd OnCalendar time` |
 | `uguu_release_version` | `v1.5.0` | `Give which release clone and install` |
 
 ### Front End
