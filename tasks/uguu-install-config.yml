@@ -1,9 +1,14 @@
 ---
-- name: clone git repository
+- uri:
+    url: https://api.github.com/repos/nokonoko/Uguu/releases/latest
+    return_content: true
+  register: json_reponse
+
+- name: clone latest version of uguu repository
   git:
     repo: https://github.com/nokonoko/uguu
     dest: /var/www/uguu
-    version: "{{ git_release_version }}"
+    version: "{{ json_reponse.json.tag_name }}"
     force: yes
     clone: yes
 
@@ -20,7 +25,7 @@
   - /var/www/files
 
 - name: init the sqlitedb
-  shell: sqlite3 /var/www/db/uguu.sq3 -init /var/www/uguu/sqlite_schema.sql
+  shell: cd /var/www/uguu/ && sqlite3 uguu.sq3 -init /var/www/uguu/src/static/dbSchemas/sqlite_schema.sql ""
   async: 30
   register: command_result
   failed_when: "'FAILED' in command_result.stderr"
@@ -53,18 +58,16 @@
     state: file
     force: yes
   with_items:
-  - /var/www/uguu/checkdb.sh
-  - /var/www/uguu/checkfiles.sh
+  - /var/www/uguu/src/static/scripts/checkdb.sh
+  - /var/www/uguu/src/static/scripts/checkfiles.sh
   
 - name: copy systemd timer files
   template:
     src: "{{ item }}"
     dest: /usr/lib/systemd/system/
   with_items:
-  - checkfiles.service
-  - checkfiles.timer
-  - checkdb.service
-  - checkdb.timer
+  - check_files_db.service
+  - check_files_db.timer
   notify:
   - restart systemd timer
   
@@ -89,37 +92,37 @@
 
 - name: set checkfile.sh path
   replace:
-    path: /var/www/uguu/checkfiles.sh
+    path: /var/www/uguu/src/static/scripts/checkfiles.sh
     regexp: '/path/to/files/'
     replace: /var/www/files/
 
 - name: replace rm command to srm commd in checkfile.sh 
   replace:
-    path: /var/www/uguu/checkfiles.sh
+    path: /var/www/uguu/src/static/scripts/checkfiles.sh
     regexp: 'rm -f'
     replace: srm -z
   
 - name: set checkdb.sh path
   replace:
-    path: /var/www/uguu/checkdb.sh
+    path: /var/www/uguu/src/static/scripts/checkdb.sh
     regexp: '/path/to/db/uguu.sq3'
     replace: /var/www/db/uguu.sq3
 
-- name: replace dist.json template
+- name: replace config.json template
   template:
-    src: dist.json.j2
-    dest: /var/www/uguu/dist.json
+    src: config.json.j2
+    dest: /var/www/uguu/src/config.json
 
-- name: Build the default target
-  community.general.make:
-    chdir: /var/www/uguu/
-  become: yes
+# - name: Build the default target
+#   community.general.make:
+#     chdir: /var/www/uguu/
+#   become: yes
   
-- name: Run 'install' target as root
-  community.general.make:
-    chdir: /var/www/uguu/
-    target: install
-  become: yes
+# - name: Run 'install' target as root
+#   community.general.make:
+#     chdir: /var/www/uguu/
+#     target: install
+#   become: yes
   
 - name: restart php-fpm
   systemd:

@@ -15,6 +15,6 @@
 ### Done ✓  
 
 - [ ] Easier testing with molecule
-- [ ] Add new task for automatically get the uguu auther's new release
+- [X] Add new task for automatically get the uguu auther's new release
 - [ ] Update local ip getting template
 - [ ] Automating Workflows with GitHub Actions

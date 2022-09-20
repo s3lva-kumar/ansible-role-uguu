@@ -13,9 +13,13 @@
     keyserver: keyserver.ubuntu.com
     id: ABF5BD827BD9BF62
 
-- name: append repo in source.list
+- name: get nginx repo link
+  shell: echo deb-src https://nginx.org/packages/ubuntu/ $(lsb_release -cs) nginx
+  register: repo_link
+
+- name: append repo into source.list
   ansible.builtin.apt_repository:
-    repo: deb-src https://nginx.org/packages/ubuntu/ {{ ubuntu_release }} nginx
+    repo: "{{repo_link.stdout}}"
     state: present
 
 - name: Update apt repository
@@ -29,14 +33,14 @@
   with_items:
   - build-essential
   - git
-  - nginx
+  - nginx-full
   - php8.0
   - php8.0-fpm
+  # - php8.0--xml
+  - zip
   - sqlite3
   - php8.0-sqlite3
-  - npm
   - secure-delete
-  - nodejs
   - certbot
   - make
 ...

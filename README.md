@@ -35,11 +35,9 @@ These below variables are changeable. You can change these variables according t
 ### Front End
 | variable name | default value | description |
 | ------------- | ------------- | ----------- |
-| `generateRobotstxt` | `false` | `I'd recommend making your own robots.txt` |
-| `generateSitemap` | `false`| `Set as true for better SEO on e.g Google` |
 | `max_upload_size` | `128` | `The max file size which an user can upload in MB` |
-| `production` | `false` | `Set this to true when you're done tweaking` |
 | `siteName` | `SITENAME` | `The name of your site. This will appear in the browser title and on several places on the website. If you changed the expire time remember to change that here as well` |
+| `subTitle` | `whoo` | `site subtitle.` |
 | `siteUrl` | `https://yoursite.com` | `Url to your site` |
 | `abuseContact` | `abuse@example.com` | `The email dedicated to receive abuse reports, this can be the same as infoContact if you want. Make sure it's a valid email or else you run the risk of getting into trouble from your server provider` |
 | `infoContact` | `info@example.com` | `The email dedicated to receive general email from users` |
@@ -49,24 +47,26 @@ These below variables are changeable. You can change these variables according t
 ### Donations
 | variable name | default value | description |
 | ------------- | ------------- | ----------- |
+| `donationBanner` | `false` | `true/false depending if you want to compile the donation banner` |
 | `paypalUrl` | `""` | `The URL to your Paypal donation page` |
 | `bitcoinAddress` | `""` | `Your BTC address for donations` |
 | `flattrUrl` | `""` | `Your Flattr donation URL` |
+| `kofiUrl` | `""` | `your Ko-Fi donation URL. This can be ignored if the donations banner isn't enabled. or if you don't want to enable that method of donating.` |
 
 ### Database and Upload File Store path
 | variable name | default value | description |
 | ------------- | ------------- | ----------- |
 | `DB_PATH` | `'/var/www/db/uguu.sq3'` | `Path to your database` |
 | `FILES_ROOT` | `'/var/www/files/'` | `The location where uploaded files are to be stored` |
-| `URL` | `'{{ ansible_eth1.ipv4.address }}/files'` | `the URL of the subdomain serving the uploaded files, If you used single domain give that domain name or if you use localhost leave this default` |
+| `FILE_URL` | `'{{ ansible_eth1.ipv4.address }}/files'` | `the URL of the subdomain serving the uploaded files, If you used single domain give that domain name or if you use localhost leave this default` |
 
 ### Misc
 | variable name | default value | description |
 | ------------- | ------------- | ----------- |
+| `malwareBanner` |  `"false"` | `true/false depending if you want to compile the malware banner.` |
 | `LOG_IP` | `'false'` | `You want you can turn this on and the IP of the uploaded file will be stored in the DB` | 
 | `ANTI_DUPE` | `'false'` | `If enabled a file already uploaded won't be uploaded again` |
 | `FILES_RETRIES` | `'15'` | `maximum number of tries to regenerate filename in case an existing one already exists, this is highly unlikely and even if it does 15 tries is more than enough` |
-| `SSL` | `'false'` | `Set this to true if using HTTPS` |
 | `NAME_LENGTH` | `'8'` | `The length of the new filename` |
 
 ## Contributing

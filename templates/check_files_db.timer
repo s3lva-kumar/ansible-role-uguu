@@ -1,9 +1,9 @@
 [Unit]
 Description=Run checkfiles.sh periodically
-Requires=checkfiles.service
+Requires=check_files_db.service
 
 [Timer]
-Unit=checkfiles.service
+Unit=check_files_db.service
 OnCalendar={{OnCalendar}}
 
 [Install]

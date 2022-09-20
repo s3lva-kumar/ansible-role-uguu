@@ -8,11 +8,8 @@
 
 - name: restart systemd timer
   systemd:
-    name: "{{ item }}"
+    name: check_files_db.timer
     state: restarted
     enabled: yes
     daemon_reload: yes
-  with_items:
-  - checkdb.timer
-  - checkfiles.timer
   
