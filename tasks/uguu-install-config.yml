@@ -4,6 +4,16 @@
     return_content: true
   register: json_reponse
 
+- name: clone latest version of uguu repository as uguu user 
+  git:
+    repo: https://github.com/nokonoko/uguu
+    dest: /var/www/uguu
+    version: "{{ json_reponse.json.tag_name }}"
+    force: yes
+    clone: yes
+  become_user: uguu
+  when: ansible_ssh_user == "root"
+
 - name: clone latest version of uguu repository
   git:
     repo: https://github.com/nokonoko/uguu
@@ -11,6 +21,7 @@
     version: "{{ json_reponse.json.tag_name }}"
     force: yes
     clone: yes
+  when: ansible_ssh_user != "root" 
 
 - name: make working directorys
   file:
@@ -25,7 +36,7 @@
   - /var/www/files
 
 - name: init the sqlitedb
-  shell: cd /var/www/uguu/ && sqlite3 uguu.sq3 -init /var/www/uguu/src/static/dbSchemas/sqlite_schema.sql ""
+  shell: sqlite3 /var/www/db/uguu.sq3 -init /var/www/uguu/src/static/dbSchemas/sqlite_schema.sql ""
   async: 30
   register: command_result
   failed_when: "'FAILED' in command_result.stderr"
@@ -113,20 +124,65 @@
     src: config.json.j2
     dest: /var/www/uguu/src/config.json
 
-# - name: Build the default target
-#   community.general.make:
-#     chdir: /var/www/uguu/
-#   become: yes
+- name: change ownership to "{{ansible_ssh_user}}"
+  file:
+    path: /var/www/uguu
+    owner: "{{ansible_ssh_user}}"
+    state: directory
+    recurse: yes
+  when: ansible_ssh_user != "root"
+
+- name: Build the makefile (It might take some time make file)
+  community.general.make:
+    chdir: /var/www/uguu/
+  become: yes
+  become_user: "{{ansible_ssh_user}}"
+  when: ansible_ssh_user != "root"
+
+- name: Run 'install' target
+  community.general.make:
+    chdir: /var/www/uguu/
+    target: install
+  become: yes
+  become_user: "{{ansible_ssh_user}}"
+  when: ansible_ssh_user != "root"
+
+# the below tasks are will if the ansible_ssh_user==root. Becasue PHP compose should not run in root user, so the "if" condition passed it will be create uguu user then do futher as a uguu user
+
+- name: replace Makefile template
+  copy:
+    src: Makefile
+    dest: /var/www/uguu/Makefile
+  when: ansible_ssh_user == "root"
+
+- name: change ownership to uguu
+  file:
+    path: /var/www/uguu
+    owner: uguu
+    group: uguu
+    state: directory
+    recurse: yes
+  when: ansible_ssh_user == "root"
+
+- name: Build the makefile as uguu(It might take some time make file)
+  community.general.make:
+    chdir: /var/www/uguu/
+  become_user: uguu
+  when: ansible_ssh_user == "root"
   
-# - name: Run 'install' target as root
-#   community.general.make:
-#     chdir: /var/www/uguu/
-#     target: install
-#   become: yes
-  
+- name: Run 'install' target as uguu
+  community.general.make:
+    chdir: /var/www/uguu/
+    target: install
+  become_user: uguu
+  when: ansible_ssh_user == "root"
+
 - name: restart php-fpm
   systemd:
-    name: php8.0-fpm
+    name: "{{ item }}"
     state: restarted
     enabled: yes
+  with_items:
+    - php8.0-fpm
+    - nginx
 ...

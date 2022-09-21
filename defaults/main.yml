@@ -6,7 +6,7 @@ OnCalendar: '*-*-* *:*:30'
 max_upload_size: '128'
 siteName: 'SITENAME'
 siteTitle: 'wahooo'
-siteUrl: 'https://yoursite.com'
+siteUrl: 'https://domain.com'
 abuseContact: 'abuse@example.com'
 infoContact: 'info@example.com'
 ServerCountryLocation: 'Sweden'
@@ -16,7 +16,7 @@ paypalUrl: ""
 bitcoinAddress: ""
 flattrUrl: ""
 kofiUrl: ""
-malwareBanner: false
+malwareBanner: 'false'
 DB_PATH: '/var/www/db/uguu.sq3'
 FILES_ROOT: '/var/www/files/'
 LOG_IP: 'false'
@@ -25,4 +25,4 @@ DB_PASS: 'NULL'
 ANTI_DUPE: 'false'
 FILES_RETRIES: '15'
 NAME_LENGTH: '8'
-FILE_URL: '{{ ansible_eth1.ipv4.address }}/files'
+FILE_URL: '/files'
