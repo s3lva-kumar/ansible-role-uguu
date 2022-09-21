@@ -1,0 +1,13 @@
+[Unit]
+Description=Run a file expiry check shell script
+Wants=check_files_db.timer
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /var/www/uguu/src/static/scripts/checkfiles.sh
+ExecStartPre=/bin/bash /var/www/uguu/src/static/scripts/checkdb.sh
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

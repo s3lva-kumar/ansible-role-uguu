@@ -1,0 +1,74 @@
+---
+- name: Update apt repository
+  apt:
+    update_cache: yes
+
+- debug: 
+    msg: "{{ ansible_ssh_user }}"
+
+- name: Add uguu group when the ansible_ssh_user == "root"
+  group: gid=5000 name=uguu state=present
+  when: ansible_ssh_user == "root"
+
+- name: add uguu user when the ansible_ssh_user == "root"
+  user: name=uguu comment="Uguu User" uid=5000 group=uguu shell=/bin/bash home=/var/www
+  when: ansible_ssh_user == "root"
+
+- name: Add PHP repo
+  apt_repository:
+    repo: 'ppa:ondrej/php'
+    state: present
+
+- name: add nginx public key
+  apt_key: 
+    keyserver: keyserver.ubuntu.com
+    id: ABF5BD827BD9BF62
+
+- name: get nginx repo link
+  shell: echo deb-src https://nginx.org/packages/ubuntu/ $(lsb_release -cs) nginx
+  register: repo_link
+
+- name: append repo into source.list
+  ansible.builtin.apt_repository:
+    repo: "{{repo_link.stdout}}"
+    state: present
+
+- name: get the 16.x node repo
+  ansible.builtin.get_url:
+    url:  https://deb.nodesource.com/setup_16.x
+    dest: ~/node-install.sh
+    mode: '0774'
+
+- name: execute the node-install.sh file
+  shell: bash ~/node-install.sh
+
+- name: sleep for 10 seconds 
+  wait_for:
+    timeout: 10
+
+- name: Update apt repository
+  apt:
+    update_cache: yes 
+
+- name: install packages on ubuntu (it might take some to install dependencies)
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+  - build-essential
+  - git
+  - nginx-full
+  - php8.0
+  - php8.0-fpm
+  - php8.0-xml
+  - php8.0-mbstring
+  - php8.0-zip
+  - php8.0-sqlite3
+  - zip
+  - unzip
+  - sqlite3
+  - secure-delete
+  - certbot
+  - make
+  - nodejs
+...

@@ -3,30 +3,28 @@
     "allowErrors": false
   },
   "dest": "dist",
-  "pkgVersion": "1.5.0",
-  "banners": [
-    "banners/malware_scans.swig",
-    "banners/donations.swig"
+  "pkgVersion": "1.6.0",
+  "pages": [
+    "index.ejs",
+    "faq.ejs",
+    "tools.ejs"
   ],
-  "src": [
-    "templates/index.swig",
-    "templates/faq.swig",
-    "templates/tools.swig"
-  ],
-  "generateRobotstxt": {{generateRobotstxt}},
-  "generateSitemap": {{generateSitemap}},
   "max_upload_size": {{max_upload_size}},
-  "production": {{production}},
+  "expireTime": "48H",
   "siteName": "{{siteName}}",
+  "subTitle": "{{siteTitle}}",
   "siteUrl": "{{siteUrl}}",
   "abuseContact": "{{abuseContact}}",
   "infoContact": "{{infoContact}}",
   "ServerCountryLocation": "{{ServerCountryLocation}}",
   "SiteMetaInfo": "{{SiteMetaInfo}}",
   "ToolsDesc": "The following tools might need editing to work on this clone of Uguu, usually editing the URL works.",
+  "donationBanner": {{donationBanner}},
   "paypalUrl": "{{paypalUrl}}",
   "bitcoinAddress": "{{bitcoinAddress}}",
   "flattrUrl": "{{flattrUrl}}",
+  "kofiUrl": "{{kofiUrl}}",
+  "malwareBanner": {{malwareBanner}},
   "DB_MODE": "sqlite",
   "DB_PATH": "{{DB_PATH}}",
   "DB_USER": "{{DB_USER}}",
@@ -35,10 +33,10 @@
   "ANTI_DUPE": {{ANTI_DUPE}},
   "BLACKLIST_DB": true,
   "FILTER_MODE": true,
+  "RATE_LIMIT": false,
   "FILES_ROOT": "{{FILES_ROOT}}",
   "FILES_RETRIES": {{FILES_RETRIES}},
-  "SSL": {{SSL}},
-  "URL": "{{URL}}",
+  "FILES_URL": "{{FILE_URL}}",
   "NAME_LENGTH": {{NAME_LENGTH}},
   "ID_CHARSET": "abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ",
   "BLOCKED_EXTENSIONS": [
