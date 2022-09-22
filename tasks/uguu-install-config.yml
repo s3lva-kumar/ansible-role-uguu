@@ -147,7 +147,7 @@
   become_user: "{{ansible_ssh_user}}"
   when: ansible_ssh_user != "root"
 
-# the below tasks are will if the ansible_ssh_user==root. Becasue PHP compose should not run in root user, so the "if" condition passed it will be create uguu user then do futher as a uguu user
+# the below tasks are will run if the ansible_ssh_user==root. Becasue PHP compose should not run in root user, so the "if" condition passed it will be create uguu user then do futher as a uguu user
 
 - name: replace Makefile template
   copy:
